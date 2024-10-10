@@ -24,7 +24,7 @@ struct SignInScreen: View {
 			)
 				
 			AppTextField(
-				text: $email,
+				text: $password,
 				hint: "Password",
 				contentType: .password
 			)
