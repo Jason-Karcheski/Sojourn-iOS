@@ -35,10 +35,9 @@ struct SojournApp: App {
 	private func destinationScreen(_ route: Route) -> some View {
 		switch route {
 		case .signIn:
-			SignInScreen()
+			SignInScreen(navigateToCreateAccount: { path.navigateToRoute(.createAccount) })
 		case .createAccount:
-			// TODO: Swap to CreateAccountScreen when ready.
-			SignInScreen()
+			CreateAccountScreen(onNavigateBack: { path.navigateBack() })
 		}
 	}
 }

@@ -19,14 +19,32 @@ struct AppTopBar: View {
 	
 	let title: String
 	let subtitle: String?
+	let navigationAction: (() -> Void)?
 	
-	init(title: String.LocalizationValue, subtitle: String.LocalizationValue? = nil) {
+	init(
+		title: String.LocalizationValue,
+		subtitle: String.LocalizationValue? = nil,
+		navigationAction: (() -> Void)? = nil
+	) {
 		self.title = String(localized: title)
 		self.subtitle = (subtitle != nil) ? String(localized: subtitle!) : nil
+		self.navigationAction = navigationAction
 	}
 	
 	var body: some View {
-		HStack {
+		ZStack {
+			if let navigationAction {
+				HStack {
+					Button("", systemImage: "chevron.backward") {
+						navigationAction()
+					}
+					.tint(.blue)
+					.padding(.horizontal)
+					
+					Spacer()
+				}
+			}
+			
 			VStack {
 				Text(title.capitalized)
 					.font(subtitle == nil ? .title3 : .subheadline)
@@ -48,7 +66,10 @@ struct AppTopBar: View {
 
 #Preview {
 	VStack(spacing: 10) {
-		AppTopBar(title: "App top bar preview")
+		AppTopBar(
+			title: "App top bar preview",
+			navigationAction: {}
+		)
 		
 		AppTopBar(
 			title: "App top bar preview",

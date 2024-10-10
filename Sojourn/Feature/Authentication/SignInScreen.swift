@@ -13,6 +13,8 @@ struct SignInScreen: View {
 	@State private var email: String = ""
 	@State private var password: String = ""
 	
+	let navigateToCreateAccount: () -> Void
+	
 	var body: some View {
 		AppScreen {
 			AppTopBar(title: "Sign In")
@@ -35,7 +37,7 @@ struct SignInScreen: View {
 				AppButton(
 					label: "Create Account",
 					type: .secondary,
-					onPressed: {}
+					onPressed: { navigateToCreateAccount() }
 				)
 				
 				AppButton(
@@ -43,7 +45,6 @@ struct SignInScreen: View {
 					onPressed: {}
 				)
 			}
-			.safeAreaPadding(.bottom)
 		}
 	}
 	
@@ -52,5 +53,5 @@ struct SignInScreen: View {
 // MARK: Previews
 
 #Preview {
-	SignInScreen()
+	SignInScreen(navigateToCreateAccount: {})
 }
