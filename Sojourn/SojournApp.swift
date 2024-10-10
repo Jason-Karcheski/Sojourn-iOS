@@ -9,9 +9,36 @@ import SwiftUI
 
 @main
 struct SojournApp: App {
+	
+	@State private var path = NavigationPath()
+	
     var body: some Scene {
         WindowGroup {
-            RootView()
+			NavigationStack(path: $path) {
+				ProgressView()
+					.frame(
+						minWidth: .infinity,
+						minHeight: .infinity,
+						alignment: .center
+					)
+					.navigationDestination(for: Route.self) { route in
+						destinationScreen(route)
+					}
+			}
+			.onAppear {
+				path.navigateToRoute(.signIn)
+			}
         }
     }
+	
+	@ViewBuilder
+	private func destinationScreen(_ route: Route) -> some View {
+		switch route {
+		case .signIn:
+			SignInScreen()
+		case .createAccount:
+			// TODO: Swap to CreateAccountScreen when ready.
+			SignInScreen()
+		}
+	}
 }
