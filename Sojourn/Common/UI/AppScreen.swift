@@ -36,6 +36,7 @@ struct AppScreen<Content: View>: View {
 				content.navigationBarBackButtonHidden()
 			}
 			.padding(.horizontal)
+			.safeAreaPadding(.bottom)
 		}
 		.frame(
 			maxWidth: .infinity,
