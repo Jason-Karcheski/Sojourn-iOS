@@ -9,8 +9,8 @@ import SwiftUI
 
 @main
 struct SojournApp: App {
-	
-	@State private var path = NavigationPath()
+
+	@State private var path: NavigationPath = NavigationPath([Route.signIn])
 	
     var body: some Scene {
         WindowGroup {
@@ -24,9 +24,6 @@ struct SojournApp: App {
 					.navigationDestination(for: Route.self) { route in
 						destinationScreen(route)
 					}
-			}
-			.onAppear {
-				path.navigateToRoute(.signIn)
 			}
         }
     }
