@@ -25,6 +25,7 @@ struct AppTextField: View {
 	let error: Error?
 	let contentType: UITextContentType?
 	let autoCapitalise: TextInputAutocapitalization?
+	@FocusState private var focusState: Bool
 	
 	init(
 		text: Binding<String>,
@@ -43,9 +44,10 @@ struct AppTextField: View {
 	var body: some View {
 		VStack {
 			inputField()
+				.focused($focusState)
 				.textContentType(contentType ?? .none)
 				.textInputAutocapitalization(autoCapitalise)
-				.textFieldStyle(AppTextFieldStyle(isError: error != nil))
+				.textFieldStyle(AppTextFieldStyle(isError: error != nil, isFocused: focusState))
 			
 			if let err = error {
 				Text(err.localizedDescription)
@@ -72,12 +74,14 @@ struct AppTextField: View {
 fileprivate struct AppTextFieldStyle: TextFieldStyle {
 	
 	let isError: Bool
+	let isFocused: Bool
 	private let highlightColour: Color
 	private let cornerRadius = 8.0
 	
-	init(isError: Bool) {
+	init(isError: Bool, isFocused: Bool) {
 		self.isError = isError
-		self.highlightColour = isError ? .red : .blue
+		self.isFocused = isFocused
+		self.highlightColour = isError ? .red : Color("AppPrimary")
 	}
 	
 	func _body(configuration: TextField<Self._Label>) -> some View {
@@ -88,7 +92,7 @@ fileprivate struct AppTextFieldStyle: TextFieldStyle {
 			.foregroundStyle(isError ? .red : .black)
 			.overlay {
 				RoundedRectangle(cornerRadius: cornerRadius)
-					.stroke(highlightColour, lineWidth: isError ? 2.0 : 0.0)
+					.stroke(highlightColour, lineWidth: isError || isFocused ? 2.0 : 0.0)
 			}
 	}
 }

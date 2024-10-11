@@ -55,7 +55,7 @@ enum AppButtonType {
 	fileprivate var backgroundColour: Color {
 		switch self {
 		case .primary:
-			Color.blue
+			Color("AppPrimary")
 		case .secondary:
 			Color.black
 		}
@@ -64,7 +64,7 @@ enum AppButtonType {
 	fileprivate var labelColour: Color {
 		switch self {
 		case .primary:
-			Color.black
+			Color("AppOnPrimary")
 		case .secondary:
 			Color.white
 		}

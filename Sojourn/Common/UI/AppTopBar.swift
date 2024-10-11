@@ -39,6 +39,8 @@ struct AppTopBar: View {
 						navigationAction()
 					} label: {
 						Image(systemName: "chevron.backward")
+							.tint(Color("AppPrimary"))
+							.fontWeight(.bold)
 					}
 					.padding(.horizontal)
 					
