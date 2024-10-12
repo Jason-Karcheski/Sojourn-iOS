@@ -22,7 +22,8 @@ struct SignInScreen: View {
 			AppTextField(
 				text: $email,
 				hint: "Email",
-				contentType: .emailAddress
+				contentType: .emailAddress,
+				keyboardType: .emailAddress
 			)
 				
 			AppTextField(

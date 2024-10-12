@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+// TODO: Add KeyboardType parameter to get the correct keyboard for inputs! .keyboardType()
+
 ///
 ///	`AppTextField` provides a `TextField` or `SecureField` that uses the Sojourn Design System
 ///
@@ -24,6 +26,7 @@ struct AppTextField: View {
 	let hint: String
 	let error: Error?
 	let contentType: UITextContentType?
+	let keyboardType: UIKeyboardType
 	let autoCapitalise: TextInputAutocapitalization?
 	@FocusState private var focusState: Bool
 	
@@ -32,12 +35,14 @@ struct AppTextField: View {
 		hint: String.LocalizationValue,
 		error: Error? = nil,
 		contentType: UITextContentType? = nil,
+		keyboardType: UIKeyboardType = .default,
 		autoCapitalise: TextInputAutocapitalization? = nil
 	) {
 		self._text = text
 		self.hint = String(localized: hint)
 		self.error = error
 		self.contentType = contentType
+		self.keyboardType = keyboardType
 		self.autoCapitalise = autoCapitalise
 	}
 	
@@ -46,6 +51,7 @@ struct AppTextField: View {
 			inputField()
 				.focused($focusState)
 				.textContentType(contentType ?? .none)
+				.keyboardType(keyboardType)
 				.textInputAutocapitalization(autoCapitalise)
 				.textFieldStyle(AppTextFieldStyle(isError: error != nil, isFocused: focusState))
 			
@@ -89,7 +95,7 @@ fileprivate struct AppTextFieldStyle: TextFieldStyle {
 			.padding()
 			.background(Color(UIColor.systemGray6))
 			.clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-			.foregroundStyle(isError ? .red : .black)
+			.foregroundStyle(isError ? .red : Color("AppOnBackground"))
 			.overlay {
 				RoundedRectangle(cornerRadius: cornerRadius)
 					.stroke(highlightColour, lineWidth: isError || isFocused ? 2.0 : 0.0)

@@ -57,7 +57,7 @@ enum AppButtonType {
 		case .primary:
 			Color("AppPrimary")
 		case .secondary:
-			Color.black
+			Color("AppBackground")
 		}
 	}
 	
@@ -66,7 +66,16 @@ enum AppButtonType {
 		case .primary:
 			Color("AppOnPrimary")
 		case .secondary:
-			Color.white
+			Color("AppOnBackground")
+		}
+	}
+	
+	fileprivate var borderColour: Color {
+		switch self {
+		case .primary:
+			Color.clear
+		case .secondary:
+			Color(.systemGray6)
 		}
 	}
 }
@@ -83,8 +92,12 @@ fileprivate struct AppButtonStyle: ButtonStyle {
 			.padding()
 			.frame(maxWidth: .infinity)
 			.background(configuration.isPressed ? type.backgroundColour.opacity(0.8) : type.backgroundColour)
-			.foregroundStyle(type.labelColour)
+			.foregroundStyle(configuration.isPressed ? type.labelColour.opacity(0.8) : type.labelColour)
 			.clipShape(RoundedRectangle(cornerRadius: 16.0))
+			.overlay {
+				RoundedRectangle(cornerRadius: 16.0)
+					.stroke(type.borderColour, lineWidth: 2.0)
+			}
 			.scaleEffect(configuration.isPressed ? CGFloat(0.97) : CGFloat(1.0))
 	}
 }

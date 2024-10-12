@@ -22,9 +22,24 @@ struct CreateAccountScreen: View {
 				navigationAction: { onNavigateBack() }
 			)
 		} content: {
-			AppTextField(text: $email, hint: "Email")
-			AppTextField(text: $password, hint: "Password")
-			AppTextField(text: $confirmPassword, hint: "Confirm password")
+			AppTextField(
+				text: $email, 
+				hint: "Email",
+				contentType: .emailAddress,
+				keyboardType: .emailAddress
+			)
+			
+			AppTextField(
+				text: $password,
+				hint: "Password",
+				contentType: .password
+			)
+			
+			AppTextField(
+				text: $confirmPassword,
+				hint: "Confirm password",
+				contentType: .password
+			)
 			
 			Spacer()
 			
