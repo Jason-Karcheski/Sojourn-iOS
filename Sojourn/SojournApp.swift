@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
 struct SojournApp: App {
 
+	@UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 	@State private var path: NavigationPath = NavigationPath([Route.signIn])
 	
     var body: some Scene {
@@ -36,5 +38,12 @@ struct SojournApp: App {
 		case .createAccount:
 			CreateAccountScreen(onNavigateBack: { path.navigateBack() })
 		}
+	}
+}
+
+class AppDelegate : NSObject, UIApplicationDelegate {
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+		FirebaseApp.configure()
+		return true
 	}
 }
