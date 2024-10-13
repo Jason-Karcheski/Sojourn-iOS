@@ -13,6 +13,7 @@ struct CreateAccountScreen: View {
 	@State private var password: String = ""
 	@State private var confirmPassword: String = ""
 	
+	private let viewmodel = CreateAccountViewModel()
 	let onNavigateBack: () -> Void
 	
     var body: some View {
@@ -44,7 +45,7 @@ struct CreateAccountScreen: View {
 			Spacer()
 			
 			AppButton(label: "Continue") {
-				// TODO: Add method to launch create account request
+				viewmodel.createAccount(email: email, password: password)
 			}
 		}
 
