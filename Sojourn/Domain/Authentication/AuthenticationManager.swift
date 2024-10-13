@@ -17,4 +17,9 @@ final class AuthenticationManager {
 		return FirebaseUser(user: result.user)
 	}
 	
+	func signIn(email: String, password: String) async throws -> FirebaseUser {
+		let result = try await Auth.auth().signIn(withEmail: email, password: password)
+		return FirebaseUser(user: result.user)
+	}
+	
 }

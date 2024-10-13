@@ -13,6 +13,7 @@ struct SignInScreen: View {
 	@State private var email: String = ""
 	@State private var password: String = ""
 	
+	private let viewmodel = SignInViewModel()
 	let navigateToCreateAccount: () -> Void
 	
 	var body: some View {
@@ -43,7 +44,9 @@ struct SignInScreen: View {
 				
 				AppButton(
 					label: "Sign In",
-					onPressed: {}
+					onPressed: {
+						viewmodel.signIn(email: email, password: password)
+					}
 				)
 			}
 		}
