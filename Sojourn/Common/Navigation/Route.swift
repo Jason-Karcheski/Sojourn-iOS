@@ -9,5 +9,5 @@ import Foundation
 
 /// A collection of routes used for navigation.
 enum Route {
-	case signIn, createAccount
+	case createAccount, dashboard, signIn
 }

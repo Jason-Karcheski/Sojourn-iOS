@@ -18,13 +18,14 @@ struct SojournApp: App {
         WindowGroup {
 			NavigationStack(path: $path) {
 				ProgressView()
-					.frame(
-						minWidth: .infinity,
-						minHeight: .infinity,
-						alignment: .center
-					)
 					.navigationDestination(for: Route.self) { route in
 						destinationScreen(route)
+					}
+					.onChange(of: path) { _, newValue in
+						print(String(describing: newValue))
+						if newValue.isEmpty {
+							path.navigateToStartingScreen()
+						}
 					}
 			}
         }
@@ -33,10 +34,15 @@ struct SojournApp: App {
 	@ViewBuilder
 	private func destinationScreen(_ route: Route) -> some View {
 		switch route {
-		case .signIn:
-			SignInScreen(navigateToCreateAccount: { path.navigateToRoute(.createAccount) })
 		case .createAccount:
 			CreateAccountScreen(onNavigateBack: { path.navigateBack() })
+		case .dashboard:
+			Text("Dashboard")
+		case .signIn:
+			SignInScreen(onNavigate: { route, shouldClearPath in
+				if shouldClearPath { path.removeLast(path.count) }
+				path.navigateToRoute(route)
+			})
 		}
 	}
 }

@@ -10,8 +10,6 @@ import FirebaseAuth
 
 final class AuthenticationManager {
 	
-	static let shared = AuthenticationManager()
-	
 	func createUser(email: String, password: String) async throws -> FirebaseUser {
 		let result = try await Auth.auth().createUser(withEmail: email, password: password)
 		return FirebaseUser(user: result.user)
@@ -22,4 +20,11 @@ final class AuthenticationManager {
 		return FirebaseUser(user: result.user)
 	}
 	
+	func currentUser() -> FirebaseUser? {
+		if let user = Auth.auth().currentUser {
+			return FirebaseUser(user: user)
+		}
+		
+		return nil
+	}
 }

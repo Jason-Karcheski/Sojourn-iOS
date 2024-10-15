@@ -16,7 +16,7 @@ import SwiftUI
 ///	- Parameters:
 ///		- text: A binding to the text value to be shown in the text field.
 ///		- hint: A `String` value that describes the expected content for the text field.
-///		- error: An `Error` that is related to this text field state.
+///		- errorMessage: An `Error`'s message that is related to this text field state.
 ///		- contentType: Describes the `UITextContentType` needed for this field.
 ///		- autoCapitalise: Sets the autocapitalise logic.
 ///
@@ -24,7 +24,7 @@ struct AppTextField: View {
 	
 	@Binding var text: String
 	let hint: String
-	let error: Error?
+	var errorMessage: String?
 	let contentType: UITextContentType?
 	let keyboardType: UIKeyboardType
 	let autoCapitalise: TextInputAutocapitalization?
@@ -33,32 +33,33 @@ struct AppTextField: View {
 	init(
 		text: Binding<String>,
 		hint: String.LocalizationValue,
-		error: Error? = nil,
+		errorMessage: String? = nil,
 		contentType: UITextContentType? = nil,
 		keyboardType: UIKeyboardType = .default,
-		autoCapitalise: TextInputAutocapitalization? = nil
+		autoCapitalise: TextInputAutocapitalization = .never
 	) {
 		self._text = text
 		self.hint = String(localized: hint)
-		self.error = error
+		self.errorMessage = errorMessage
 		self.contentType = contentType
 		self.keyboardType = keyboardType
 		self.autoCapitalise = autoCapitalise
 	}
 	
 	var body: some View {
-		VStack {
+		VStack(alignment: .leading) {
 			inputField()
 				.focused($focusState)
 				.textContentType(contentType ?? .none)
 				.keyboardType(keyboardType)
 				.textInputAutocapitalization(autoCapitalise)
-				.textFieldStyle(AppTextFieldStyle(isError: error != nil, isFocused: focusState))
+				.textFieldStyle(AppTextFieldStyle(isError: errorMessage != nil, isFocused: focusState))
 			
-			if let err = error {
-				Text(err.localizedDescription)
+			if let err = errorMessage {
+				Text(err)
 					.foregroundStyle(.red)
 					.font(.caption)
+					.padding(.horizontal)
 			}
 		}
 	}

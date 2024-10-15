@@ -24,4 +24,11 @@ extension NavigationPath {
 		if !self.isEmpty { self.removeLast() }
 	}
 	
+	/// Navigate to a starting destination
+	mutating func navigateToStartingScreen() {
+		let authManager = AuthenticationManager()
+		let route = authManager.currentUser() == nil ? Route.signIn : Route.dashboard
+		self.append(route)
+	}
+	
 }

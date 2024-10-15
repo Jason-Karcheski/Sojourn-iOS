@@ -10,26 +10,33 @@ import SwiftUI
 
 struct SignInScreen: View {
 	
-	@State private var email: String = ""
-	@State private var password: String = ""
+	@State private var viewmodel: SignInViewModel
+	private let onNavigate: (Route, Bool) -> Void
 	
-	private let viewmodel = SignInViewModel()
-	let navigateToCreateAccount: () -> Void
+	init(
+		viewmodel: SignInViewModel = SignInViewModel(),
+		onNavigate: @escaping (Route, Bool) -> Void
+	) {
+		self.viewmodel = viewmodel
+		self.onNavigate = onNavigate
+	}
 	
 	var body: some View {
 		AppScreen {
 			AppTopBar(title: "Sign In")
 		} content: {
 			AppTextField(
-				text: $email,
+				text: $viewmodel.email,
 				hint: "Email",
+				errorMessage: viewmodel.emailError?.message,
 				contentType: .emailAddress,
 				keyboardType: .emailAddress
 			)
 				
 			AppTextField(
-				text: $password,
+				text: $viewmodel.password,
 				hint: "Password",
+				errorMessage: viewmodel.passwordError?.message,
 				contentType: .password
 			)
 			
@@ -39,13 +46,13 @@ struct SignInScreen: View {
 				AppButton(
 					label: "Create Account",
 					type: .secondary,
-					onPressed: { navigateToCreateAccount() }
+					onPressed: { onNavigate(.createAccount, false) }
 				)
 				
 				AppButton(
 					label: "Sign In",
 					onPressed: {
-						viewmodel.signIn(email: email, password: password)
+						viewmodel.signIn { onNavigate(.dashboard, true) }
 					}
 				)
 			}
@@ -57,5 +64,5 @@ struct SignInScreen: View {
 // MARK: Previews
 
 #Preview {
-	SignInScreen(navigateToCreateAccount: {})
+	SignInScreen(onNavigate: { route, clearPath in })
 }
