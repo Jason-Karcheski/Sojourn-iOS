@@ -47,23 +47,3 @@ final class SignInViewModel {
 	}
 	
 }
-
-enum ValidationError: Error {
-	case emailEmpty, emailInvalid, passwordEmpty, passwordShort, passwordInvalid
-	
-	var message: String {
-		switch self {
-		case .emailEmpty:
-			"Email cannot be empty"
-		case .emailInvalid:
-			"Email is not in a correct format"
-		case .passwordEmpty:
-			"Password cannot be empty"
-		case .passwordShort:
-			"Passwords need to be at least 8 characters long"
-		case .passwordInvalid:
-			"Password is invalid"
-		}
-	}
-}
-

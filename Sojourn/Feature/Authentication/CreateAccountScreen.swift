@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct CreateAccountScreen: View {
-	
-	@State private var email: String = ""
-	@State private var password: String = ""
-	@State private var confirmPassword: String = ""
-	
-	private let viewmodel = CreateAccountViewModel()
+
+	@State private var viewmodel = CreateAccountViewModel()
 	let onNavigateBack: () -> Void
+	let onNavigate: (Route, Bool) -> Void
 	
     var body: some View {
 		AppScreen {
@@ -24,28 +21,33 @@ struct CreateAccountScreen: View {
 			)
 		} content: {
 			AppTextField(
-				text: $email, 
+				text: $viewmodel.email,
 				hint: "Email",
+				errorMessage: viewmodel.emailError?.message,
 				contentType: .emailAddress,
 				keyboardType: .emailAddress
 			)
 			
 			AppTextField(
-				text: $password,
+				text: $viewmodel.password,
 				hint: "Password",
+				errorMessage: viewmodel.passwordError?.message,
 				contentType: .password
 			)
 			
 			AppTextField(
-				text: $confirmPassword,
+				text: $viewmodel.confirmPassword,
 				hint: "Confirm password",
+				errorMessage: viewmodel.confirmPasswordError?.message,
 				contentType: .password
 			)
 			
 			Spacer()
 			
 			AppButton(label: "Continue") {
-				viewmodel.createAccount(email: email, password: password)
+				viewmodel.createAccount {
+					onNavigate(.dashboard, true)
+				}
 			}
 		}
 
@@ -53,5 +55,5 @@ struct CreateAccountScreen: View {
 }
 
 #Preview {
-	CreateAccountScreen(onNavigateBack: {})
+	CreateAccountScreen(onNavigateBack: {}, onNavigate: { route, shouldClearPath in })
 }

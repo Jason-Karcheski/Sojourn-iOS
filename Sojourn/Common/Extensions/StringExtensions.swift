@@ -30,4 +30,14 @@ extension String {
 //		return specialCharacterPredicate.evaluate(with: self) ? nil : .passwordInvalid
 	}
 	
+	/// Validate that a string is a valid password confirmation.
+	///
+	/// - Parameters:
+	/// 	- password: A value to compare self with.
+	func isValidPasswordConfirmation(for password: String) -> ValidationError? {
+		guard !self.isEmpty else { return .passwordEmpty }
+		guard self == password else { return .passwordsDoNotMatch }
+		return nil
+	}
+	
 }

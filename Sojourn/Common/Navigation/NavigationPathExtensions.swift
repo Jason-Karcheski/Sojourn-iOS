@@ -14,7 +14,8 @@ extension NavigationPath {
 	///
 	/// - Parameters:
 	/// 	- route: The destination to navigate to.
-	mutating func navigateToRoute(_ route: Route) {
+	mutating func navigateToRoute(_ route: Route, shouldClearPath: Bool = false) {
+		if shouldClearPath { self.removeLast(self.count) }
 		self.append(route)
 	}
 	

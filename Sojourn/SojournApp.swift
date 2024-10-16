@@ -35,13 +35,17 @@ struct SojournApp: App {
 	private func destinationScreen(_ route: Route) -> some View {
 		switch route {
 		case .createAccount:
-			CreateAccountScreen(onNavigateBack: { path.navigateBack() })
+			CreateAccountScreen(
+				onNavigateBack: { path.navigateBack() },
+				onNavigate: { route, shouldClearPath in
+					path.navigateToRoute(route, shouldClearPath: shouldClearPath)
+				}
+			)
 		case .dashboard:
 			Text("Dashboard")
 		case .signIn:
 			SignInScreen(onNavigate: { route, shouldClearPath in
-				if shouldClearPath { path.removeLast(path.count) }
-				path.navigateToRoute(route)
+				path.navigateToRoute(route, shouldClearPath: shouldClearPath)
 			})
 		}
 	}
