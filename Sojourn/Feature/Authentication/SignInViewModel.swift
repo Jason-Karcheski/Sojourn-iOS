@@ -15,6 +15,7 @@ final class SignInViewModel {
 	var password: String = ""
 	var passwordError: ValidationError? = nil
 	var signInError: Error? = nil
+	var isLoading: Bool = false
 	private let authManager: AuthenticationManager
 	
 	init(authenticationManager: AuthenticationManager = AuthenticationManager()) {
@@ -22,8 +23,13 @@ final class SignInViewModel {
 	}
 	
 	func signIn(onSuccess: @escaping () -> Void) {
+		isLoading = true
+		
 		validateCredentials()
-		guard emailError == nil, passwordError == nil else { return }
+		guard emailError == nil, passwordError == nil else {
+			isLoading = false
+			return
+		}
 		
 		Task {
 			do {
@@ -35,6 +41,8 @@ final class SignInViewModel {
 				signInError = error
 				print("Sign In: Error - \(error)")
 			}
+			
+			isLoading = false
 		}
 	}
 	

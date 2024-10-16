@@ -16,6 +16,8 @@ final class CreateAccountViewModel {
 	var passwordError: ValidationError? = nil
 	var confirmPassword: String = ""
 	var confirmPasswordError: ValidationError? = nil
+	var createAccountError: Error? = nil
+	var isLoading: Bool = false
 	private let authManager: AuthenticationManager
 	
 	init(authManager: AuthenticationManager = AuthenticationManager()) {
@@ -23,17 +25,26 @@ final class CreateAccountViewModel {
 	}
 	
 	func createAccount(onSuccess: @escaping () -> Void) {
+		isLoading = true
+		
 		validateCredentials()
-		guard emailError == nil, passwordError == nil, confirmPasswordError == nil else { return }
+		guard emailError == nil, passwordError == nil, confirmPasswordError == nil else {
+			isLoading = false
+			return
+		}
 		
 		Task {
 			do {
 				let user = try await authManager.createUser(email: email, password: password)
 				print("Create Account: Success - \(user)")
+				createAccountError = nil
 				onSuccess()
 			} catch {
 				print("Create Account: Error - \(error)")
+				createAccountError = error
 			}
+			
+			isLoading = false
 		}
 	}
 	

@@ -44,7 +44,10 @@ struct CreateAccountScreen: View {
 			
 			Spacer()
 			
-			AppButton(label: "Continue") {
+			AppButton(
+				label: "Continue",
+				state: viewmodel.isLoading ? .loading : .enabled
+			) {
 				viewmodel.createAccount {
 					onNavigate(.dashboard, true)
 				}

@@ -51,6 +51,7 @@ struct SignInScreen: View {
 				
 				AppButton(
 					label: "Sign In",
+					state: viewmodel.isLoading ? .loading : .enabled,
 					onPressed: {
 						viewmodel.signIn { onNavigate(.dashboard, true) }
 					}

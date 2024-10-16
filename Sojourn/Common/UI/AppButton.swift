@@ -20,15 +20,18 @@ struct AppButton: View {
 	
 	let label: String
 	let type: AppButtonType
+	let state: AppButtonState
 	let onPressed: () -> Void
 	
 	init(
 		label: String.LocalizationValue,
 		type: AppButtonType = .primary,
+		state: AppButtonState = .enabled,
 		onPressed: @escaping () -> Void
 	) {
 		self.label = String(localized: label)
 		self.type = type
+		self.state = state
 		self.onPressed = onPressed
 	}
 	
@@ -37,8 +40,14 @@ struct AppButton: View {
 			Button {
 				onPressed()
 			} label: {
-				Text(label.capitalized)
+				if state == .loading {
+					ProgressView()
+						.tint(type.labelColour)
+				} else {
+					Text(label.capitalized)
+				}
 			}
+			.disabled(state != .enabled)
 			.buttonStyle(AppButtonStyle(type: type))
 		}
 	}
@@ -78,6 +87,13 @@ enum AppButtonType {
 			Color(.systemGray6)
 		}
 	}
+}
+
+///
+/// `AppButtonState` defines the states which an `AppButton` can be in.
+///
+enum AppButtonState {
+	case enabled, disabled, loading
 }
 
 ///
